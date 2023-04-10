@@ -4,10 +4,6 @@ const morgan = require("morgan");
 
 const app = express();
 
-// app.use(cors());
-app.use(express.static("frontend"));
-app.use(express.json());
-
 morgan.token("content", function (req, res) {
   if (req.method == "POST") return JSON.stringify(req.body);
   return null;
@@ -18,6 +14,10 @@ app.use(
     ":method :url :status :res[content-length] - :response-time ms :content"
   )
 );
+
+// app.use(cors());
+app.use(express.static("frontend"));
+app.use(express.json());
 
 const PORT = process.env.PORT || 3001;
 
