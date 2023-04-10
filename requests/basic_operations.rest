@@ -1,0 +1,21 @@
+DELETE http://localhost:3001/api/persons/5417
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "id": 5,
+    "name": "Joshua Meyers",
+    "number": "34-23-222345"
+}
+###
+// duplicate test
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "id": 1,
+    "name": "Arto Hellas",
+    "number": "040-123456"
+}
