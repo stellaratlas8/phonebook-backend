@@ -17,7 +17,7 @@ app.use(
   )
 );
 
-app.use(express.static("frontend"));
+app.use(express.static("build"));
 app.use(express.json());
 
 const PORT = process.env.PORT || 3001;
