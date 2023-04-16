@@ -83,8 +83,8 @@ app.put("/api/persons/:id", (request, response) => {
   }
 
   return Entry.findByIdAndUpdate(request.params.id, request.body).then((entry) => {
-    if (entry) response.status(204).end();
-    else response.json(entry).end();
+    if (entry) response.json(entry).end();
+    else response.status(404).end();
   })
 });
 
