@@ -46,51 +46,46 @@ app.use(requestLogger);
 //   return num;
 // };
 
-app.get("/api/persons", (request, response) => {
-  Entry.find({})
-    .then((entries) => {
-      response.status(200).json(entries).end();
-    })
-    .catch((err) => {
-      console.log(err);
-      response.status(400).end();
-    });
-});
+app.get("/api/persons", (request, response) =>
+  Entry.find({}).then((entries) => {
+    response.status(200).json(entries).end();
+  })
+);
 
-app.get("/info", (request, response) => {
-  Entry.countDocuments({}, err, (count) => {
+app.get("/info", (request, response) =>
+  Entry.countDocuments({}).then((count) => {
     response
       .status(200)
       .send(`<p>Phonebook has info for ${count} people</p><p>${Date()}</p>`)
       .end();
-  }).catch((err) => {
-    console.log(err);
-    response.status(400).end();
-  });
-});
+  })
+);
 
-app.get("/api/persons/:id", (request, response) => {
-  Entry.findByIdAndDelete(request.params.id)
-    .then((entry) => {
-      if (entry) response.status(200).json(entry).end();
-      else response.status(404).end();
-    })
-    .catch((err) => {
-      console.log(err);
-      response.status(400).end();
-    });
-});
+app.get("/api/persons/:id", (request, response) =>
+  Entry.findByIdAndDelete(request.params.id).then((entry) => {
+    if (entry) response.status(200).json(entry).end();
+    else response.status(404).end();
+  })
+);
 
-app.delete("/api/persons/:id", (request, response) => {
-  Entry.findById(request.params.id)
-    .then((entry) => {
-      if (entry) response.status(204).end();
-      else response.status(404).end();
-    })
-    .catch((err) => {
-      console.log(err);
-      response.status(400).end();
-    });
+app.delete("/api/persons/:id", (request, response) =>
+  Entry.findById(request.params.id).then((entry) => {
+    if (entry) response.status(204).end();
+    else response.status(404).end();
+  })
+);
+
+app.put("/api/persons/:id", (request, response) => {
+  const data = request.body;
+  if (!data.name || !data.number) {
+    response.status(400).json({ error: "Missing name or number field" }).end();
+    return;
+  }
+
+  return Entry.findByIdAndUpdate(request.params.id, request.body).then((entry) => {
+    if (entry) response.status(204).end();
+    else response.json(entry).end();
+  })
 });
 
 app.post("/api/persons", (request, response) => {
@@ -100,29 +95,18 @@ app.post("/api/persons", (request, response) => {
     return;
   }
 
-  Entry.find({ name: data.name })
-    .then((found) => {
-      if (found.length > 0) {
-        response.status(400).json({ error: "Name must be unique" }).end();
-        return;
-      }
+  return Entry.find({ name: data.name }).then((found) => {
+    if (found.length > 0) {
+      response.status(400).json({ error: "Name must be unique" }).end();
+      return;
+    }
 
-      let entry = new Entry(data);
+    let entry = new Entry(data);
 
-      entry
-        .save()
-        .then((savedNote) => {
-          response.json(savedNote).end();
-        })
-        .catch((err) => {
-          console.log(err);
-          response.status(400).end();
-        });
-    })
-    .catch((err) => {
-      console.log(err);
-      response.status(400).end();
+    return entry.save().then((entry) => {
+      response.json(entry).end();
     });
+  });
 });
 
 app.use(unknownEndpoint);

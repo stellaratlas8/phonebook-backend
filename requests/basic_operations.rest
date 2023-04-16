@@ -1,7 +1,10 @@
 GET http://localhost:3001/api/persons
 
 ###
+GET http://localhost:3001/info
 
+###
+// this is kinda getting non-vcs-friendly
 GET http://localhost:3001/api/persons/643c0a93f7e60d41fb95fa89
 
 ###
@@ -12,7 +15,6 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-    "id": 5,
     "name": "Joshua Meyers",
     "number": "34-23-222345"
 }
@@ -22,7 +24,6 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-    "id": 1,
     "name": "Arto Hellas",
     "number": "040-123456"
 }
