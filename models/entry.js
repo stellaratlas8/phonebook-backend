@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const url = process.env.MONGODB_URI
+const collection = process.env.MONGODB_COLLECTION
 
 console.log('connecting to', url)
 
@@ -30,7 +31,7 @@ const entrySchema = new mongoose.Schema({
     },
     required: true,
   },
-})
+}, { collection })
 
 entrySchema.set('toJSON', {
   /* eslint-disable no-param-reassign, no-underscore-dangle */ //
